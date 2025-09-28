@@ -1,7 +1,7 @@
 import { navigate, usePixel, useStore, studio } from "./framework/frame.js"
 import './style.js'
 
-export const homePage = () => {
+const homePage = () => {
     const [count, useCount] = usePixel('count', 0)
     const [show, setShow] = usePixel('show', false)
 
@@ -11,7 +11,7 @@ export const homePage = () => {
             <h1> {{name}} </h1>
             <button id="index-page">Count {{count}}</button>
             <button id="change-page" class="new"> ${useStore('show') ? "Hey Dear" : "wasted haaa!"}</button>
-            <App />
+            ${App().canvas()}
         </div>
         `,
         state: {
@@ -34,5 +34,15 @@ export const homePage = () => {
     }
 }
 
+
+const App = () => {
+    return {
+        canvas: () => `
+        <div>
+            <h1>App Component</h1>
+        </div>
+        `
+    }
+}
 
 window.onload = async () => navigate(homePage)
