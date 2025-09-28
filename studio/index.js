@@ -34,21 +34,5 @@ export const homePage = () => {
     }
 }
 
-const App = () => ({
-    canvas: `
-    <a href="">Checkout the documentation</a>
-    `
-})
-
-const regex = RegExp(`<[A-Z][a-zA-Z0-9]*\ */>`, 'g')
-const code = `
-    <div>
-        <h1>Hello world</h1>
-        <BookReview />
-        <AppMega1 />
-    </div>
-`
-let matches = code.match(regex)
-// console.log(matches)
 
 window.onload = async () => navigate(homePage)
