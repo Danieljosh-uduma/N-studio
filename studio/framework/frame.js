@@ -41,11 +41,11 @@ class Studio {
         if (this.base) {
             this.base.innerHTML = canvas
         }
-        if (this.actions) {
-            this.addDOMAction();
-        }
         if (this.style) {
             this.addDOMStyle();
+        }
+        if (this.actions) {
+            this.addDOMAction();
         }
     }
     /**
@@ -60,7 +60,7 @@ class Studio {
         }
         let canvas = await this.currentFrame();
         for (const key in this.state) {
-            const regex = RegExp(`{{${key}}}`, 'g');
+            const regex = RegExp(`{{\\s*${key}\\s*}}`, 'g');
             canvas = canvas.replace(regex, this.state[key]);
         }
         
@@ -126,7 +126,20 @@ class Studio {
         if (frame.style) {
             this.addStyle(frame.style)
         }
-        this.setState(frame.state);
+        if (frame.state) {
+            if (typeof frame.state === "object" && frame.state.length > 0) {
+                const state = {}
+                for (let i = 0; i < frame.action.length; i++) {
+                    Object.assign(state, frame.state[i])
+                }
+                console.log(state)
+                this.setState(state)
+            } else {
+                this.setState(frame.state);
+            }
+            return
+        }
+        this.setState({})
     }
     /**
      * Adds an event listener to event list.

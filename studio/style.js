@@ -1,4 +1,4 @@
-import { style } from './framework/css.js'
+import { style, rstyle } from './framework/css.js'
 
 style('*', {
     boxSizing: 'border-box',
@@ -43,11 +43,11 @@ style('h1', {
     animation: 'textGradientAnim 4s linear infinite',
     backgroundSize: '200% 200%',
 });
-style('@keyframes textGradientAnim', {
-    '0%': { backgroundPosition: '0% 50%' },
-    '50%': { backgroundPosition: '100% 50%' },
-    '100%': { backgroundPosition: '0% 50%' }
-});
+style('@keyframes textGradientAnim', rstyle('0%', {
+    backgroundPosition: '0% 50%',})+rstyle('50%', {
+    backgroundPosition: '100% 50%'})+rstyle('100%', {
+    backgroundPosition: '0% 50%'
+}))
 style('button', {
     marginTop: '1rem',
     background: '#ff6ec4',
@@ -64,10 +64,13 @@ style('button', {
     zIndex: 1,
     animation: 'buttonPulse 2s infinite alternate',
 });
-style('@keyframes buttonPulse', {
-    '0%': { transform: 'scale(1)', boxShadow: '0 2px 8px rgba(162,89,247,0.15)' },
-    '100%': { transform: 'scale(1.05)', boxShadow: '0 4px 16px rgba(255,110,196,0.25)' }
-});
+style('@keyframes buttonPulse', rstyle('0%', {
+    transform: 'scale(1)',
+    boxShadow: '0 2px 8px rgba(162,89,247,0.15)'
+})+rstyle('100%', {
+    transform: 'scale(1.05)',
+    boxShadow: '0 4px 16px rgba(255,110,196,0.25)'
+}))
 style('button:hover', {
     background: 'linear-gradient(90deg, #00eaff 0%, #ff6ec4 50%, #a259f7 100%)',
     transform: 'scale(1.07)',
@@ -83,11 +86,6 @@ style('.new', {
     position: 'relative',
     zIndex: 1,
     animation: 'newBtnAnim 3s infinite alternate',
-});
-style('@keyframes newBtnAnim', {
-    '0%': { borderColor: '#a259f7', color: '#a259f7' },
-    '50%': { borderColor: '#ff6ec4', color: '#ff6ec4' },
-    '100%': { borderColor: '#00eaff', color: '#00eaff' }
 });
 style('.new:hover', {
     background: 'linear-gradient(90deg, #a259f7, #ff6ec4, #00eaff)',

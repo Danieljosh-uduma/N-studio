@@ -17,7 +17,23 @@ export function style(selector, styleObject) {
     injectCSS(cssText);
 }
 
+export function rstyle(selector, styleObject) {
+    const cssText = jsonToCssString(selector, styleObject)
+
+    return cssText
+}
+
+/**
+ * Converts a JSON style object into a CSS string.
+ * @param {String} selector 
+ * @param {Object} styleObject 
+ * @returns {String} The generated CSS string.
+ */
 function jsonToCssString(selector, styleObject) {
+    if (typeof styleObject === "string") {
+        return `${selector} { ${styleObject} }`
+    }
+
     let cssRule = `${selector} {\n`;
 
     for (const prop in styleObject) {
