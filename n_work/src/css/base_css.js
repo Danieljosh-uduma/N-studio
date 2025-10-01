@@ -3,10 +3,16 @@ import { useStore } from "../../../studio/framework/frame.js";
 
 const theme = useStore('theme')
 
-style(':root', `
-    --bg-color: ${useStore('theme') === 'light'? '#f3f3f3': "#01111cff"};
-    --text-color: ${useStore('theme') === 'light'? '#022742ff': '#f3f3f3'}
-`)
+style('.dark', {
+    backgroundColor: "#01111cff",
+    color: '#f3f3f3',
+    width: "100%",
+    height: "100%"
+})
+style('.light', {
+    backgroundColor: "#f3f3f3",
+    color: '#01111cff'
+})
 
 style("*", {
     padding: '0',
@@ -15,8 +21,6 @@ style("*", {
     transition: 'all 0.3s ease-in'
 })
 style("body", {
-    background: "var(--bg-color)",
-    color: "var(--text-color)",
     fontFamily: "sans-serif"
 })
 style("li", {

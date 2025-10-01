@@ -44,6 +44,8 @@ const App = () => {
             <h1>App Component</h1>
             <button id="index">Count {{count1}}</button>
         </div>
+
+        <a class="anc" href="/n_work/index.html">Read documentation.</a>
         `,
         state: {
             count1: count1
@@ -59,6 +61,17 @@ const App = () => {
                 flex-direction: column;
                 align-items: center;
                 margin-top: 20px;
+            }
+            .anc {
+                color: white;
+                text-decoration: none;
+                margin-top: 20px;
+                font-weight: bold;
+
+                &:hover {
+                    text-decoration: underline;
+                    color: #21a4e1ff;
+                }
             }
         `
     }

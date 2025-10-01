@@ -6,10 +6,13 @@ export default function RootLayout(App) {
     const [theme, setTheme] = usePixel('theme', 'dark')
     const header = Header(setTheme)
     const app = App()
+    
     return ({
         canvas: () => `
-            ${header.canvas()}
-            ${app.canvas()}
+            <div class="${useStore('theme') === "light"? "light": "dark"}">
+                ${header.canvas()}
+                ${app.canvas()}
+            </div>
         `,
         state: [app.state, header.state],
         action: [header.action],

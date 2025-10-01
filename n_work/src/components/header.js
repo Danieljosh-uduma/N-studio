@@ -8,7 +8,13 @@ export default function Header(setTheme) {
             <h3 class="logo">NStudio</h3>
             <nav>
                 <ul>
-                    <li id="theme">Theme: ${useStore('theme')}</li>
+                    <li id="theme">
+                        <img 
+                            src="${useStore('theme') === 'light' ? '/public/assets/dark.png' : '/public/assets/light.png'}"
+                            alt="theme icon"
+                            class="theme-icon"
+                        />
+                    </li>
                     <li>Home</li>
                     <li>Docs</li>
                     <li>Contact us</li>

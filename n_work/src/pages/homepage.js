@@ -22,16 +22,18 @@ export default function Homepage() {
 function HeroSection() {
     return ({
         canvas: () => `
-            <section class='hero'>
-                <h1 class='logo'>Studio Framer</h1>
-                <div class='hero__container'>
-                    <div>
-                        <h2>Join us today.</h2>
-                    </div>
-                    <div>
-                        <div></div>
-                        <div></div>
-                    </div>
+            <section class='section__hero'>
+                <div class='hero'>
+                    <h1 class='logo'>Studio Framer</h1>
+                    <div class='hero__container'>
+                        <div>
+                            <h2>Join us today.</h2>
+                        </div>
+                        <div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                </div>
                 </div>
             </section>
         `,
@@ -46,6 +48,8 @@ function HeroSection() {
 
         })+rstyle('.hero h1', {
             textAlign: 'center'
+        })+rstyle('.section__hero', {
+            height: "100vh"
         })
     })
 }
