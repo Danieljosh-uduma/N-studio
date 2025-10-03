@@ -1,6 +1,6 @@
 import Header from "../header.js"
-import { usePixel, useStore } from "../../../../_nstudio/frame.js"
-import { rstyle } from "../../../../_nstudio/css.js"
+import { usePixel, useStore } from "../../../../appNstudio/frame.js"
+import { rstyle } from "../../../../appNstudio/css.js"
 
 export default function RootLayout(App) {
     const [theme, setTheme] = usePixel('theme', 'dark')

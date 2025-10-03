@@ -1,5 +1,5 @@
 import RootLayout from "../components/layout/root.js"
-import { rstyle } from "../../../_nstudio/css.js"
+import { rstyle } from "../../../appNstudio/css.js"
 import "../styles/base_css.js"
 
 export default function Homepage() {

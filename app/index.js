@@ -1,4 +1,4 @@
-import { navigate, usePixel, useStore } from "../_nstudio/frame.js"
+import { navigate, usePixel, useStore } from "../appNstudio/frame.js"
 import DocsPage from "./src/pages/homepage.js"
 import './src/styles/style.js'
 

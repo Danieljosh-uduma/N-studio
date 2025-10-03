@@ -1,5 +1,5 @@
-import { style, rstyle } from "../../../_nstudio/css.js";
-import { useStore } from "../../../_nstudio/frame.js";  
+import { style, rstyle } from "../../../appNstudio/css.js";
+import { useStore } from "../../../appNstudio/frame.js";  
 
 const theme = useStore('theme')
 

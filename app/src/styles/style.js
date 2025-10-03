@@ -1,4 +1,4 @@
-import { style, rstyle } from '../../../_nstudio/css.js'
+import { style, rstyle } from '../../../appNstudio/css.js'
 
 style('*', {
     boxSizing: 'border-box',

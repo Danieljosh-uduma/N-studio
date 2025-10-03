@@ -1,4 +1,4 @@
-import { useStore } from "../../../_nstudio/frame.js"
+import { useStore } from "../../../appNstudio/frame.js"
 
 export default function Header(setTheme) {
 
