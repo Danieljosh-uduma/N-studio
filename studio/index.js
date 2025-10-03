@@ -38,7 +38,7 @@ const App = () => {
             <button id="index">Count {{count1}}</button>
         </div>
 
-        <a class="anc" href="/n_work/index.html">Read documentation.</a>
+        <a class="anc" href="/n_work/page.html">Read documentation.</a>
         `,
         action: {
             id: "index",
