@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Studio class to manage state, rendering, actions, and styles for a web application.
  * @class Studio
