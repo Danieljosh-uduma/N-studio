@@ -4,7 +4,6 @@ import { injectCSS } from "./frame.js";
  * @type {Object} - store temporary css text
  */
 const styleRegistry = {}
-
 /**
  * transforms css object into cssText and inject it to the DOM
  * @param {String} selector 
@@ -16,7 +15,6 @@ export function style(selector, styleObject) {
     styleRegistry[selector] = cssText;
     injectCSS(cssText);
 }
-
 export function rstyle(selector, styleObject) {
     const cssText = jsonToCssString(selector, styleObject)
 
@@ -46,4 +44,4 @@ function jsonToCssString(selector, styleObject) {
     }
     cssRule += '}\n';
     return cssRule;
-}
+}                                                                                                         

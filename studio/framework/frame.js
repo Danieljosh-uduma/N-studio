@@ -30,22 +30,24 @@ class Studio {
      * @returns {void}
     */
     async render() {
-        if (!this.base || !this.currentFrame) {
-            console.error("Rendering error: 'base' or 'currentFrame' not found");
-        }
-        const canvas = await this.getCanvas();
-        if (!canvas) {
-            console.error("Canvas error: 'currentFrame' not found");
-            return;
-        }
-        if (this.base) {
-            this.base.innerHTML = canvas
-        }
-        if (this.style) {
-            this.addDOMStyle();
-        }
-        if (this.actions) {
-            this.addDOMAction();
+        console.log(this.state)
+        if (this.base || this.currentFrame) {
+            const canvas = await this.getCanvas();
+            if (!canvas) {
+                console.error("Canvas error: 'currentFrame' not found");
+                return;
+            }
+            if (this.base) {
+                this.base.innerHTML = canvas
+            }
+            if (this.style) {
+                this.addDOMStyle();
+            }
+            if (this.actions) {
+                this.addDOMAction();
+            }
+        } else {
+            console.error("rendering Error: 1101")
         }
     }
     /**
@@ -132,7 +134,6 @@ class Studio {
                 for (let i = 0; i < frame.action.length; i++) {
                     Object.assign(state, frame.state[i])
                 }
-                console.log(state)
                 this.setState(state)
             } else {
                 this.setState(frame.state);
@@ -215,7 +216,6 @@ const useStore = (value) => studio.state[value]
  */
 const injectCSS = (cssText) => studio.addDOMStyle(cssText)
 
-
 /**
  * Creates a pixel state.
  * @param {string} state 
@@ -226,7 +226,7 @@ const usePixel = (state, initialValue) => {
     const dict = {}
     dict[state] = initialValue
     if (studio.state[state] === undefined) {
-        studio.setState(dict);
+        Object.assign(studio.state, dict);
     }
     const setPixel = (valueOrUpdater) => {
         if (typeof valueOrUpdater === 'function') {

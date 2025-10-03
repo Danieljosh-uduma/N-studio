@@ -1,8 +1,10 @@
-type Framer = () => {
+type Framer = (props?: string | number | object) => {
     canvas: () => string
     state: State
-    action: Action
+    action: Action[] // | Action
+    style: string
 }
+
 type State = {
     title: string
     props: {}

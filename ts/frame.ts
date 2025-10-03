@@ -5,11 +5,13 @@ class Studio {
     state: { [key: string]: State }
     actions: { [key: string]: { func: () => void, type: string } }
     currentFrame: (() => string) | undefined
+    style: {}
 
     constructor (base=document) {
         this.base = base? base.getElementById('base') : null
         this.state = {}
         this.actions = {}
+        this.style = {}
     }
 
     setState (newState: State) {
@@ -29,7 +31,12 @@ class Studio {
         if (this.base) {
             this.base.innerHTML = canvas
         }
-        this.addActionToDom()
+        if (this.style) {
+            this.addDomStyle()
+        }
+        if (this.actions) {
+            this.addDOMAction()
+        }
     }
 
     getCanvas () {
@@ -40,13 +47,13 @@ class Studio {
         let canvas = this.currentFrame()
 
         for (const key in this.state) {
-            const regex = RegExp(`{{${key}}}`, 'g')
+            const regex = RegExp(`{{\\s*${key}\\s*}}`, 'g')
             canvas = canvas.replace(regex, String(this.state[key]))
         }
         return canvas
     }
 
-    addActionToDom () {
+    addDOMAction () {
         for (const key in this.actions) {
             const element = document.getElementById(key)
 
@@ -60,12 +67,27 @@ class Studio {
     }
     
 
-    navigate (template: Framer) {
-        const frame = template()
+    navigate (template: Framer, props=null) {
+        const frame = props === 0 && props != undefined? template(props): template()
         this.currentFrame = frame.canvas
 
         if (frame.action) {
-            this.addEvent(frame.action.id, {func: frame.action.func, type: frame.action.type})
+            if (typeof frame.action === "object" && frame.action.length > 0) {
+                for (let i = 0; i < frame.action.length; i++) {
+                    this.addEvent(
+                        frame.action[i].id,
+                        {
+                            func: frame.action[i].func,
+                            type: frame.action[i].type
+                        }
+                    )
+                }
+            } else {
+                this.addEvent(frame.action.id, {func: frame.action.func, type: frame.action.type})
+            }
+        }
+        if (frame.style) {
+            this.addStyle(frame.style)
         }
         this.setState(frame.state)
     }

@@ -1,4 +1,3 @@
-import { style } from "./framework/css.js"
 import { navigate, usePixel, useStore, studio } from "./framework/frame.js"
 import './style.js'
 
@@ -10,18 +9,12 @@ const homePage = () => {
     return {
         canvas: () => `
         <div class="div">
-            <h1> {{name}} </h1>
+            <h1> Studio Framer </h1>
             <button id="index-page">Count {{count}}</button>
             <button id="change-page" class="new"> ${useStore('show') ? "Hey Dear" : "wasted haaa!"}</button>
             ${app.canvas()}
         </div>
         `,
-        state: [{
-            count: count,
-            show: show,
-            name: "Studio Framer",
-            title: "homepage",
-        }, app.state],
         action: [{
             id: "index-page",
             type: "click",
@@ -47,9 +40,6 @@ const App = () => {
 
         <a class="anc" href="/n_work/index.html">Read documentation.</a>
         `,
-        state: {
-            count1: count1
-        },
         action: {
             id: "index",
             type: "click",
