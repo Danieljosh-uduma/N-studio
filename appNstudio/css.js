@@ -1,14 +1,7 @@
 import { injectCSS } from "./frame.js";
 
-/**
- * @type {Object} - store temporary css text
- */
 const styleRegistry = {}
-/**
- * transforms css object into cssText and inject it to the DOM
- * @param {String} selector 
- * @param {Object} styleObject 
- */
+
 export function style(selector, styleObject) {
     const cssText = jsonToCssString(selector, styleObject);
     
@@ -21,12 +14,6 @@ export function rstyle(selector, styleObject) {
     return cssText
 }
 
-/**
- * Converts a JSON style object into a CSS string.
- * @param {String} selector 
- * @param {Object} styleObject 
- * @returns {String} The generated CSS string.
- */
 function jsonToCssString(selector, styleObject) {
     if (typeof styleObject === "string") {
         return `${selector} { ${styleObject} }`
