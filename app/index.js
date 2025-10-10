@@ -10,7 +10,7 @@ const homePage = () => {
     return {
         canvas: () => `
         <div class="div">
-            <h1> Studio Framer </h1>
+            <h1> Studio Framer {{name}} </h1>
             <button id="index-page">Count {{count}}</button>
             <button id="change-page" class="new"> ${useStore('show') ? "Hey Dear" : "wasted haaa!"}</button>
             ${app.canvas()}
@@ -25,7 +25,10 @@ const homePage = () => {
             type: "click",
             func: () => setShow(prev => !prev)
         }, ...app.action],
-        style: app.style
+        style: app.style,
+        state: {
+            name: "Daniel Joshua"
+        }
     }
 }
 
