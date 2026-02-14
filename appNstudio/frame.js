@@ -1,130 +1,183 @@
+import { h, mount, patch, htmlToVNode } from "./vdom.js";
+
 class Studio {
     constructor(base = document) {
         this.base = base ? base.getElementById('base') : null;
+        this.oldVDom = null;
         this.state = {};
         this.style = {}
         this.actions = {};
+        this.config = {}; // Initialize empty, set later
+
+        this.initRouter();
     }
+
+    setConfig(config) {
+        this.config = config;
+        if (this.config.tailwind) {
+            this.injectTailwind();
+        }
+        // Handle initial route after config is set
+        this.handleRoute(window.location.pathname);
+    }
+
+    initRouter() {
+        window.addEventListener('popstate', () => {
+            this.handleRoute(window.location.pathname);
+        });
+    }
+
+    handleRoute(path) {
+        if (!this.config.routes) return;
+        
+        // Normalize path for local filesystem or nested paths
+        // Try exact match first
+        let component = this.config.routes[path];
+        
+        // If no match, try finding a route that ends with this path
+        if (!component) {
+            const keys = Object.keys(this.config.routes);
+            const matchingKey = keys.find(k => path.endsWith(k) && k !== '/');
+            component = matchingKey ? this.config.routes[matchingKey] : this.config.routes['/'];
+        }
+        
+        this.navigate(component, null, false);
+    }
+
+    injectTailwind() {
+        if (document.head.querySelector('script[src*="tailwindcss"]')) return;
+        const script = document.createElement('script');
+        script.src = "https://cdn.tailwindcss.com";
+        document.head.appendChild(script);
+    }
+    
     setState(newState) {
         Object.assign(this.state, newState);
         this.render();
     } 
     async render() {
-        if (this.base || this.currentFrame) {
-            const canvas = await this.getCanvas();
-            if (!canvas) {
-                console.error("Canvas error: 'currentFrame' not found");
-                return;
-            }
+        if (!this.base && !this.currentFrame) {
+            console.error("Rendering Error: 1101");
+            return;
+        }
+
+        const canvasHTML = await this.getCanvas();
+        if (canvasHTML === null) return;
+
+        let newVDom = htmlToVNode(canvasHTML);
+        this.injectActions(newVDom);
+
+        if (!this.oldVDom) {
             if (this.base) {
-                this.base.innerHTML = canvas
-            }
-            if (this.style) {
-                this.addDOMStyle();
-            }
-            if (this.actions) {
-                this.addDOMAction();
+                this.base.innerHTML = "";
+                mount(newVDom, this.base);
             }
         } else {
-            console.error("rendering Error: 1101")
+            patch(this.base, this.oldVDom, newVDom);
+        }
+
+        this.oldVDom = newVDom;
+
+        if (this.style["style"]) {
+            this.updateStyles();
         }
     }
+
     async getCanvas() {
-        if (!this.currentFrame) {
-            console.error("Canvas error: 'currentFrame' not found");
-            return null;
-        }
+        if (!this.currentFrame) return null;
         let canvas = await this.currentFrame();
+        
+        // Better interpolation
         for (const key in this.state) {
-            const regex = RegExp(`{{\\s*${key}\\s*}}`, 'g');
+            const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
             canvas = canvas.replace(regex, this.state[key]);
         }
         
         return canvas;
     }
-    AddComponent() {
-        const component = RegExp(`<[A-Z][a-zA-Z0-9]*\ */>`, 'g')
-        const matches = canvas.match(component)
 
-        const regex = /<([A-Z][a-zA-Z0-9]*)/g
-        const componentMatch = matches.map(item => item.match(regex)[0])
-        const componentNames = componentMatch.map(item => item.slice(1))
+    injectActions(vnode) {
+        if (!vnode) return;
+        
+        const id = vnode.props.id;
+        if (id && this.actions[id]) {
+            const action = this.actions[id];
+            vnode.props[`on${action.type}`] = action.func;
+        }
 
-        for (let i = 0; i < componentNames.length; i++) {
-            canvas = canvas.replace(regex, componentNames[i])
+        if (vnode.props.children) {
+            vnode.props.children.forEach(child => this.injectActions(child));
         }
     }
-    addDOMAction() {
-        for (const key in this.actions) {
-            const element = document.getElementById(key);
-            if (!element) {
-                console.error("Event error: 'event canvas' not found");
-                continue;
+
+    navigate(template, props = null, pushState = true) {
+        // Handle path strings
+        if (typeof template === 'string') {
+            const component = this.config.routes[template];
+            if (component) {
+                if (pushState) history.pushState({}, '', template);
+                return this.navigate(component, props, false);
             }
-            const action = this.actions[key];
-            element.addEventListener(action.type, action.func);
+            console.error(`Route ${template} not found`);
+            return;
         }
-    }
-    navigate(template, props=null) {
-        const frame = props == 0 && props != undefined ? template(props): template();
+
+        const frame = (typeof template === 'function') ? template(props) : template;
         this.currentFrame = frame.canvas;
+        
+        this.actions = {};
         if (frame.action) {
-            this.actions = {}
-            if (typeof frame.action === "object" && frame.action.length > 0) {
-                for (let i = 0; i < frame.action.length; i++) {
-                    this.addEvent(
-                        frame.action[i].id,
-                        {
-                            func: frame.action[i].func,
-                            type: frame.action[i].type
-                        }
-                    )
-                }
-            } else {
-                this.addEvent(frame.action.id, { func: frame.action.func, type: frame.action.type });
-            }
+            const actions = Array.isArray(frame.action) ? frame.action : [frame.action];
+            actions.forEach(act => {
+                this.addEvent(act.id, { func: act.func, type: act.type });
+            });
         }
+
         if (frame.style) {
-            this.addStyle(frame.style)
+            const styleText = typeof frame.style === 'string' ? frame.style : JSON.stringify(frame.style);
+            this.addStyle(styleText);
         }
+
         if (frame.state) {
-            if (typeof frame.state === "object" && frame.state.length > 0) {
-                const state = {}
-                for (let i = 0; i < frame.action.length; i++) {
-                    Object.assign(state, frame.state[i])
-                }
-                this.setState(state)
-            } else {
-                this.setState(frame.state);
-            }
-            return
+            this.setState(frame.state);
+        } else {
+            this.render(); // Ensure render if no state provided
         }
-        this.setState({})
+
+        // Auto-update URL if pushState is true and we can find a matching path
+        if (pushState && typeof template === 'function') {
+            const path = Object.keys(this.config.routes).find(key => this.config.routes[key] === template);
+            if (path) history.pushState({}, '', path);
+        }
     }
+
     addEvent(id, { func, type }) {
         this.actions[id] = { func, type };
     }
+
     addStyle(style) {
-        this.style["style"] = style
+        this.style["style"] = style;
+        this.updateStyles();
     }
-    addDOMStyle(cssText=null) {
-        let style = document.head.querySelector('style');
-        if (!document.head.contains(style)) {
-            style = document.createElement('style')
+
+    updateStyles() {
+        let styleTag = document.head.querySelector('style#studio-style');
+        if (!styleTag) {
+            styleTag = document.createElement('style');
+            styleTag.id = 'studio-style';
+            document.head.appendChild(styleTag);
         }
-        const head = document.head;
-        head.appendChild(style)
-        if (cssText) {
-            style.textContent += cssText
-            return
+        styleTag.textContent = this.style["style"] || "";
+    }
+
+    addDOMStyle(cssText) {
+        let styleTag = document.head.querySelector('style#studio-injected-style');
+        if (!styleTag) {
+            styleTag = document.createElement('style');
+            styleTag.id = 'studio-injected-style';
+            document.head.appendChild(styleTag);
         }
-        if (this.style) {
-            for (const key in this.style) {
-            style.appendChild(document.createTextNode(this.style[key]))
-            }
-            head.appendChild(style)
-        }
-        
+        styleTag.textContent += cssText;
     }
 }
 const studio = new Studio()
@@ -137,6 +190,10 @@ const usePixel = (state, initialValue) => {
     if (studio.state[state] === undefined) {
         Object.assign(studio.state, dict);
     }
+    
+    // Return a getter function to ensure we always have the latest value
+    const getPixel = () => studio.state[state];
+    
     const setPixel = (valueOrUpdater) => {
         if (typeof valueOrUpdater === 'function') {
             const prev = studio.state[state];
@@ -148,7 +205,7 @@ const usePixel = (state, initialValue) => {
             studio.setState(dict);
         }
     };
-    return [studio.state[state], setPixel];
+    return [getPixel, setPixel];
 };
 
 export { studio, navigate, usePixel, useStore, injectCSS }
