@@ -83,18 +83,27 @@ setCount(c => c + 1);</code></pre>
                     </div>
 
                     <div class="api-card">
-                        <h3 class="text-2xl font-semibold mb-4"><code>useStore(name)</code></h3>
-                        <p class="mb-4">Retrieves the current value of a state variable directly from the global store. Useful for logic inside template strings.</p>
-                        <pre><code>const isActive = useStore('show');
-// Status: \${isActive ? 'Active' : 'Hidden'}</code></pre>
-                    </div>
+                        <h3 class="text-2xl font-semibold mb-4"><code>navigate(path | component, props)</code></h3>
+                        <p class="mb-4">Handles routing and state changes. Can take a registered path string (e.g. <code>'/docs'</code>) or a direct component function.</p>
+                        <pre><code>// Path-based (updates URL)
+navigate('/docs');
 
-                    <div class="api-card">
-                        <h3 class="text-2xl font-semibold mb-4"><code>navigate(template, props)</code></h3>
-                        <p class="mb-4">Handles routing and scene changes. Mounts a new component to the base element.</p>
-                        <pre><code>import NextPage from './pages/next.js';
-
+// Component-based
+import NextPage from './pages/next.js';
 navigate(NextPage, { userId: 123 });</code></pre>
+                    </div>
+                </section>
+
+                <section class="docs-section">
+                    <h2 class="text-3xl font-bold mb-8 pb-4 border-b border-slate-800">Advanced</h2>
+                    
+                    <div class="api-card">
+                        <h3 class="text-2xl font-semibold mb-4"><code>studio.setConfig(config)</code></h3>
+                        <p class="mb-4">Initializes the framework with your <code>studio.config.js</code>. This links the routing table and enables features like Tailwind.</p>
+                        <pre><code>import { studio } from '../appNstudio/frame.js';
+import config from '../studio.config.js';
+
+studio.setConfig(config);</code></pre>
                     </div>
                 </section>
 

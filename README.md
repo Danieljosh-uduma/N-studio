@@ -1,108 +1,95 @@
-# Studio Framer
+# Studio Framer 🚀
 
-Studio Framer is a lightweight JavaScript framework for building interactive web applications with a focus on modularity, state management, and dynamic styling. It provides a simple API for creating components, managing state, and handling user actions.
+The lightspeed JavaScript framework for building high-performance web applications with a modern Virtual DOM, built-in client-side routing, and seamless Tailwind CSS integration.
 
-## Features
+## ✨ Features
 
-- **Component-based architecture:** Define UI components with encapsulated logic and rendering.
-- **State management:** Easily manage and update application state.
-- **Dynamic styling:** Inject CSS directly from JavaScript for flexible theming.
-- **Action handling:** Attach event listeners to DOM elements for interactive UIs.
+- **🚀 High-Performance VDOM:** Efficient diffing and patching engine for smooth UI updates.
+- **🛣️ Client-Side Routing:** Built-in History API support for clean URLs and browser navigation.
+- **🎨 Tailwind Integrated:** Native Play CDN support via `studio.config.js`.
+- **🏗️ Declarative APIs:** Intuitive `usePixel` and `useStore` hooks for state management.
+- **✨ Style API:** Programmatic CSS management with the `style()` and `injectCSS()` functions.
+- **🌑 Modern Aesthetic:** Out-of-the-box support for premium dark-themed designs.
 
-## Getting Started
+## 📦 Project Structure
 
-### Clone the Repository
-
-```bash
-git clone https://github.com/your-username/studio-framer.git
-cd studio-framer
+```text
+framework/
+├── app/
+│   ├── index.js           # Entry point
+│   └── src/
+│       └── pages/         # Page components (home.js, docs.js)
+├── appNstudio/
+│   ├── frame.js           # Core Studio class & hooks
+│   ├── vdom.js            # VDOM engine
+│   └── css.js             # Styling utilities
+├── index.html             # HTML Shell
+└── studio.config.js       # Framework configuration
 ```
 
-### Project Structure
+## 🚀 Getting Started
 
-```
-index.html
-studio/
-  index.js
-  style.js
-  framework/
-    frame.js
-    css.js
-    utils.js
-ts/
-  frame.ts
-  types.ts
-```
+### 1. Configure the Framework
 
-### Usage
+Edit `studio.config.js` to define your routes and enable features like Tailwind:
 
-1. **Include the framework in your HTML:**
+```javascript
+import { homePage } from "./app/src/pages/home.js";
+import docsPage from "./app/src/pages/docs.js";
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Studio Framer Example</title>
-</head>
-<body>
-  <div id="base"></div>
-  <script src="./studio/index.js" type="module"></script>
-</body>
-</html>
+export default {
+    tailwind: true,
+    routes: {
+        '/': homePage,
+        '/docs': docsPage
+    }
+};
 ```
 
-2. **Create a page/component in JavaScript:**
+### 2. Initialize the App
 
-Example from [`studio/index.js`](studio/index.js):
+The entry point (`app/index.js`) links the core to your config:
 
-```js
-export const homePage = () => {
-  const [count, useCount] = usePixel('count', 0)
-  const [show, setShow] = usePixel('show', false)
+```javascript
+import { studio } from "../appNstudio/frame.js";
+import config from "../studio.config.js";
 
-  return {
-    canvas: () => `
-      <div class="div">
-        <h1> {{name}} </h1>
-        <button id="index-page">Count {{count}}</button>
-        <button id="change-page" class="new"> ${useStore('show') ? "Hey Dear" : "wasted haaa!"}</button>
-        <App />
-      </div>
-    `,
-    state: {
-      count: count,
-      show: show,
-      name: "Studio Framer",
-      title: "homepage",
-    },
-    action: [
-      {
-        id: "index-page",
-        type: "click",
-        func: () => useCount(count => count + 1)
-      },
-      {
-        id: "change-page",
-        type: "click",
-        func: () => setShow(prev => !prev)
-      }
-    ],
-    style: ''
-  }
-}
+studio.setConfig(config);
 ```
 
-3. **Start the app:**
+### 3. Create Reactive Components
 
-The main entry point is [`studio/index.js`](studio/index.js), which calls `navigate(homePage)` on window load.
+```javascript
+import { usePixel } from "../appNstudio/frame.js";
 
-## Customization
+export const Counter = () => {
+    const [count, setCount] = usePixel('count', 0);
+    
+    return {
+        canvas: () => `
+            <div class="p-8 bg-slate-900 rounded-xl">
+                <h1 class="text-3xl">Count: {{count}}</h1>
+                <button id="inc" class="bg-blue-500 px-4 py-2 mt-4">Increment</button>
+            </div>
+        `,
+        action: [{
+            id: 'inc',
+            type: 'click',
+            func: () => setCount(c => c + 1)
+        }]
+    };
+};
+```
 
-- Add new components by defining functions that return an object with `canvas`, `state`, and `action` also `style` for manual styling.
-- Use `usePixel` for state hooks and `useStore` to access state values.
-- Style your app using [`studio/style.js`](studio/style.js) or inject CSS dynamically.
+## 📖 API Reference
 
-## License
+Detailed API documentation is available in-app at the `/docs` route.
+
+- `usePixel(name, initialValue)` - Reactive state hook.
+- `useStore(name)` - Direct global state access.
+- `navigate(path | component)` - Client-side navigation.
+- `style(selector, rules)` - Global CSS injection.
+
+## 📝 License
 
 MIT License
