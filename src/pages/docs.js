@@ -8,6 +8,7 @@ export default function docsPage() {
             title: 'Getting Started',
             links: [
                 { label: 'Introduction', href: '#intro', active: true },
+                { label: 'Installation', href: '#install' },
                 { label: 'Folder Structure', href: '#structure' }
             ]
         },
@@ -33,6 +34,16 @@ export default function docsPage() {
             ]
         }
     ];
+
+    const npmInitCode = CodeBlock({
+        language: 'bash',
+        code: `mkdir my-app\ncd my-app\nnpx studio-framer init\nnpm install\nnpx studio-framer serve`
+    });
+
+    const npmInstallCode = CodeBlock({
+        language: 'bash',
+        code: `npm install studio-framer`
+    });
 
     const usePixelCode = CodeBlock({
         language: 'javascript',
@@ -76,6 +87,23 @@ export default function docsPage() {
                 Studio Framer is a next-generation JavaScript framework built for designers and engineers. 
                 It combines the power of a reactive Virtual DOM with the simplicity of atomic styling.
             </p>
+        </section>
+
+        <section id="install" class="mb-20">
+            <h2 class="text-3xl font-bold text-white mb-6">Installation</h2>
+            <p class="text-slate-400 mb-6">
+                You can start a new project instantly using our scaffolding tool, or install it manually as a library.
+            </p>
+            
+            <div class="mb-10">
+                <h3 class="text-xl font-semibold text-slate-200 mb-4">1. Quick Start (Scaffold)</h3>
+                ${npmInitCode.canvas()}
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold text-slate-200 mb-4">2. Manual Installation</h3>
+                ${npmInstallCode.canvas()}
+            </div>
         </section>
 
         <section id="structure" class="mb-20">

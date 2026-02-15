@@ -1,12 +1,20 @@
 {
-  "name": "app-nstudio",
-  "version": "1.0.0",
-  "description": "The Studio Framer Core Framework",
+  "name": "studio-framer",
+  "version": "1.1.6",
+  "description": "A lightspeed JavaScript framework for building high-performance web applications with a modern Virtual DOM and built-in routing.",
   "main": "frame.js",
   "types": "./index.d.ts",
   "type": "module",
+  "files": [
+    "frame.js",
+    "vdom.js",
+    "css.js",
+    "server.js",
+    "index.d.ts"
+  ],
   "bin": {
-    "studio-serve": "./server.js"
+    "studio": "cli.js",
+    "studio-serve": "server.js"
   },
   "exports": {
     ".": "./frame.js",
@@ -17,8 +25,10 @@
   "keywords": [
     "framework",
     "vdom",
-    "reactive"
+    "reactive",
+    "studio-framer",
+    "frontend"
   ],
-  "author": "",
+  "author": "Daniel Joshua Uduma",
   "license": "MIT"
 }

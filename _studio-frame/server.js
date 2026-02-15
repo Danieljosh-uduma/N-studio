@@ -47,8 +47,21 @@ const server = http.createServer((req, res) => {
         res.end(`Server Error: ${error.code}`);
       }
     } else {
+      let finalContent = content;
+
+      // Smart Module Resolution: Resolve bare 'studio-framer' imports in JS files
+      if (extname === '.js') {
+        const textContent = content.toString('utf-8');
+        // Replace bare 'studio-framer' imports with relative paths to node_modules
+        const updatedText = textContent.replace(
+          /(from\s+['"])studio-framer(['"])/g, 
+          '$1/node_modules/studio-framer/frame.js$2'
+        );
+        finalContent = Buffer.from(updatedText, 'utf-8');
+      }
+
       res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
+      res.end(finalContent);
     }
   });
 });

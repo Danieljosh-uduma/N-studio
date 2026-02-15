@@ -1,4 +1,5 @@
 import { h, mount, patch, htmlToVNode } from "./vdom.js";
+import { style } from "./css.js";    
 
 class Studio {
     constructor(base = document) {
@@ -208,4 +209,4 @@ const usePixel = (state, initialValue) => {
     return [getPixel, setPixel];
 };
 
-export { studio, navigate, usePixel, useStore, injectCSS }
+export { studio, navigate, usePixel, useStore, injectCSS, style }
