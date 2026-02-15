@@ -1,0 +1,24 @@
+{
+  "name": "app-nstudio",
+  "version": "1.0.0",
+  "description": "The Studio Framer Core Framework",
+  "main": "frame.js",
+  "types": "./index.d.ts",
+  "type": "module",
+  "bin": {
+    "studio-serve": "./server.js"
+  },
+  "exports": {
+    ".": "./frame.js",
+    "./vdom": "./vdom.js",
+    "./css": "./css.js",
+    "./server": "./server.js"
+  },
+  "keywords": [
+    "framework",
+    "vdom",
+    "reactive"
+  ],
+  "author": "",
+  "license": "MIT"
+}

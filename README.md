@@ -15,27 +15,41 @@ The lightspeed JavaScript framework for building high-performance web applicatio
 
 ```text
 framework/
-├── app/
-│   ├── index.js           # Entry point
-│   └── src/
-│       └── pages/         # Page components (home.js, docs.js)
-├── appNstudio/
-│   ├── frame.js           # Core Studio class & hooks
-│   ├── vdom.js            # VDOM engine
-│   └── css.js             # Styling utilities
-├── index.html             # HTML Shell
-└── studio.config.js       # Framework configuration
+├── index.js           # Main Entry point
+├── server.js          # Lightweight SPA Server
+├── index.html         # HTML Shell
+├── studio.config.js   # Framework configuration
+├── package.json       # Project dependencies & scripts
+├── src/               # Application source code
+│   └── pages/         # Page components (home.js, docs.js)
+├── public/            # Static assets
+└── appNstudio/        # The Studio Framer Framework (Package)
+    ├── package.json   # Framework package metadata
+    ├── frame.js       # Core Studio class & hooks
+    ├── vdom.js        # VDOM engine
+    └── css.js         # Styling utilities
 ```
 
 ## 🚀 Getting Started
 
-### 1. Configure the Framework
+### 1. Install & Run
+
+Clone the repository and start the development server:
+
+```bash
+npm install
+npm start
+```
+
+The app will be available at `http://localhost:3000`.
+
+### 2. Configure the Framework
 
 Edit `studio.config.js` to define your routes and enable features like Tailwind:
 
 ```javascript
-import { homePage } from "./app/src/pages/home.js";
-import docsPage from "./app/src/pages/docs.js";
+import { homePage } from "./src/pages/home.js";
+import docsPage from "./src/pages/docs.js";
 
 export default {
     tailwind: true,
@@ -46,13 +60,13 @@ export default {
 };
 ```
 
-### 2. Initialize the App
+### 3. Initialize the App
 
-The entry point (`app/index.js`) links the core to your config:
+The entry point (`index.js`) links the core to your config:
 
 ```javascript
-import { studio } from "../appNstudio/frame.js";
-import config from "../studio.config.js";
+import { studio } from "./appNstudio/frame.js";
+import config from "./studio.config.js";
 
 studio.setConfig(config);
 ```
