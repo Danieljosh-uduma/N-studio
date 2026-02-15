@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node _studio-frame/server.js",
-    "dev": "node _studio-frame/server.js"
+    "dev": "node _studio-frame/server.js",
+    "build": "node _studio-frame/build.js"
   },
   "keywords": [
     "studio-framer",
@@ -14,5 +15,8 @@
     "framework"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.27.3"
+  }
 }
