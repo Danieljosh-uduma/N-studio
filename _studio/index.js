@@ -39,7 +39,7 @@ var F=(o,t,...e)=>({type:o,props:{...t,children:e.flat().map(i=>typeof i=="objec
                 <div class="blob blob-accent"></div>
                 
                 <div class="hero-card">
-                    <div class="hero-badge">v2.0 \u2014 Lightspeed Beta</div>
+                    <div class="hero-badge">v1.1.6 \u2014 Lightspeed Beta</div>
                     <h1 class="hero-title">Build <span>Faster</span> with Studio</h1>
                     <p class="hero-subtitle">
                         The minimal reactive framework designed for modern web engineers who value 
